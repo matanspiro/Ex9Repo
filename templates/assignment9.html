@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Assignment 9 {%endblock%}
+
+{% block content %}
+{{super()}}
+    <br>
+First Name: {{firstName | default('Unknown', true) | upper()}}
+    <br>
+Last Name : {{lastName | default('Unknown', true) | lower()}}
+    <br>
+{% if firstName %}
+    Thanks for writing your first name
+{% else %}
+    Why didn't you write your first name?
+{% endif %}
+    <br>
+Hobbies:
+<ol>
+    {% for hobby in hobbies %}
+        <li>{{hobby}}</li>
+    {% endfor %}
+</ol>
+{% endblock %}

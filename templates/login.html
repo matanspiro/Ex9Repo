@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Log In
+{% endblock %}
+
+{% block tochen %}
+    {% if session.username %}
+        <h3>Welcome back, {{ session.usename }}</h3>
+    {% else %}
+        <h1> Please log in </h1>
+        <form action="/" method="POST">
+          Username: <input name="username" type="text">
+          Password: <input name="password" type="password">
+          <input type="submit">
+        </form>
+    {% endif %}
+{% endblock %}

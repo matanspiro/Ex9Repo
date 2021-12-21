@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="/static/cssEx9.css">
+</head>
+<body>
+    {% include 'Header.html' %}
+    {% block content %} This line was written to demonstrate the Super function {% endblock %}
+    {% include 'Footer.html' %}
+</body>
+</html>
