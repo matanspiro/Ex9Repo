@@ -2,22 +2,35 @@
 {% block title %} Assignment 9 {%endblock%}
 
 {% block content %}
-{{super()}}
-    <br>
-First Name: {{firstName | default('Unknown', true) | upper()}}
-    <br>
-Last Name : {{lastName | default('Unknown', true) | lower()}}
-    <br>
-{% if firstName %}
-    Thanks for writing your first name
-{% else %}
-    Why didn't you write your first name?
-{% endif %}
-    <br>
-Hobbies:
-<ol>
-    {% for hobby in hobbies %}
-        <li>{{hobby}}</li>
-    {% endfor %}
-</ol>
+    <h1> Welcome to assignment9 page </h1>
+    <h2>Search Form</h2>
+    <form action="/assignment9" method="GET"> <!-- action is the page we want to get after submitting the form-->
+        Name: <input name="name" type="text"> <!-- the name of the input is transferred to the python file!!-->
+        <input type="submit" value="Search">
+    </form>
+
+    {% if Name %}  <!--this is the variable that's being returned from the python file-->
+        <h3>Result: {{ session.result }}</h3>
+    {% endif %}
+
+    {% if Users %}
+        <h3>Result:
+            {% for key,value in Users.items() %}
+            <ul>
+                <li> {{ key }}, {{ value }}</li>
+            </ul>
+            {% endfor %}
+        </h3>
+    {% endif %}
+
+    {% if session.username %}
+
+    {% else %}
+        <h2>Registration Form</h2>
+        <form action="/assignment9" method="POST">
+            Username: <input type="text" name="username">
+            Password: <input type="password" name="password">
+            <input type="submit" value="Register">
+        </form>
+    {% endif %}
 {% endblock %}

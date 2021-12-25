@@ -1,3 +1,8 @@
 <Header>
-  This is the header
+    <a href="/">Home</a>
+    {% if session.username %}
+        | <a href="/log_out">Log Out</a>
+    {% endif %}
+    <br>
+    <h2>Welcome, {{session.username | default('Guest', true)}} </h2>
 </Header>

@@ -1,64 +1,58 @@
 from flask import Flask, redirect, url_for, render_template, request  # query parameters
 from flask import session #stay as single user throughout all pages. its also a dic data structure. its a global variable (the dic)
-app = Flask(__name__)  # we will work on one instanse of the class Flask
+app = Flask(__name__)
 app.secret_key = '123' #כשמגדירים סשן חייבים סיסמה סודית
 
 
-@app.route('/home_page')
 @app.route('/home')
 @app.route('/')
 def home_func():
-    # return 'welcome to the main page'
-    found = True  # משל לחיפוש אובייקט בבסיס נתונים
-    if found:
-        return render_template('index.html', name='matan')
-    else:
-        return render_template('index.html')
+    return render_template('home.html')
 
 
-@app.route('/about', methods=['GET', 'POST'])  # only 'post' is not allowed
-def about_func():
-    # TODO
-    # DO SOMTHING WITH DB
-    return render_template('about.html',
-                           profile={'name': 'matan', 'second_name': 'spiro'},
-                           university='BGU',
-                           degrees=['BSc', 'MSc'],
-                           hobbies=('art', 'music', 'sql', 'flask', 'animals', 'web'))
-
-
-@app.route('/catalog')  # נלמד בהמשך איך לעשות את זה יותר דינמי וגנרי שיקבל איזשהו משתנה
-def catalog_func():
-    # return 'welcome to catalog page'
-    if 'user_inside' in session:
-        if session['user_inside']:
-            print('user_inside')
-    if 'product' in request.args:  #there is a problem - the keys are null if user didnt click "submit", it doesnt matter if he filled the attributes
-        product = request.args['product']  # name of input in forms are the keys of query parameters
-        size = request.args['size']
-        return render_template('catalog.html', product=product, size=size) #sending variables to the html page
-    return render_template('catalog.html')  # this route is for reaching this page directly from header
-
-@app.route('/login', methods=['GET', 'POST'])
-def login_func():
+@app.route('/assignment9', methods=['GET', 'POST'])
+def ass9_func():
     if request.method == 'GET':
-        return render_template('login.html')
+        users = {'user1': {'Name': 'a', 'Email': 'a@gmail.com'},
+                 'user2': {'Name': 'b', 'Email': 'b@gmail.com'},
+                 'user3': {'Name': 'c', 'Email': 'c@gmail.com'},
+                 'user4': {'Name': 'd', 'Email': 'd@gmail.com'},
+                 'user5': {'Name': 'e', 'Email': 'e@gmail.com'}
+                 }
+        if 'name' in request.args:  #'name' is what's got transferred from the html file
+            name = request.args['name']
+            if name != '':
+                session['name'] = name  #here i set the global variables, using session
+                for i in users:
+                    # i in 'users' means: getting the keys of 'users' (user1, user2...)
+                    # users[i] means: get the values of 'users' (Name: a, Email: a@gmail.com) -> takes you to the values of the first dictionary
+                    for j in users[i]:
+                        # j means the keys of inner dictionary
+                        if users[i][j] == name:
+                            result = users[i]
+                            session['result'] = result
+                            #  users[i][j] gets the values of the inner dictionary
+                            return render_template('assignment9.html', Name=name, Result=result)  # sending variables to the html page
+
+            else:
+                name = request.args['name']
+                print('ggggg')
+                return render_template('assignment9.html', Name=name, Users=users)
 
     if request.method == 'POST':
-        username = request.form['username'] #this is how you get the data that was inserted in the form
+        username = request.form['username']  #  this is how you get the data that was inserted in the form
         password = request.form['password']
-        #DB
-        found = True
-        if found:
-            session['username'] = username #dic['K']=V
-            return redirect(url_for('home_func'))
-        else:
-            return render_template('login.html')
+        session['username'] = username
+        return redirect(url_for('ass9_func'))
 
-@app.route('/logout')
+    return render_template('assignment9.html')
+
+
+@app.route('/log_out')
 def logout_func():
-    session['username'] = ''
-    return render_template('index.html')
+    username = ''
+    session['username'] = username
+    return render_template('assignment9.html', Username=username)
 
 
 if __name__ == '__main__':
